@@ -1,57 +1,268 @@
 ---
 import AppLayout from "../layouts/AppLayout.astro";
-import SectionHeader from "../components/ui/SectionHeader.astro";
 import ReviewCard from "../components/community/ReviewCard.astro";
 import DiscussionCard from "../components/community/DiscussionCard.astro";
 import UserCard from "../components/community/UserCard.astro";
 import CollectionCard from "../components/community/CollectionCard.astro";
-import { reviews } from "../data/reviews";
+import { reviews, communityPicks } from "../data/reviews";
 import { discussions } from "../data/discussions";
 import { users } from "../data/users";
 import { collections } from "../data/collections";
 import { mangaBySlug, userById } from "../data/index";
 
 const featuredUsers = users.slice(0, 4);
+const popularReviews = reviews.slice(0, 6);
+const featuredCollections = collections.slice(0, 3);
+const topReview = reviews[0];
+const topReviewUser = userById[topReview.userId];
+const topReviewManga = mangaBySlug[topReview.mangaSlug];
+
+const reviewFilters = ["Trending", "Top rated", "Newest", "Most replies"];
+const discussionFilters = ["All", "Recommendations", "Theories", "Anime adaptations", "Industry"];
+
+const totalReviews = reviews.length * 142;
+const totalThreads = discussions.reduce((sum, d) => sum + d.replies, 0);
+const activeReaders = "12.4k";
 ---
 
 <AppLayout
   title="Community | MangaNest"
   description="See what MangaNest readers are reviewing, discussing, and curating this week."
 >
-  <section class="mb-12 rounded-2xl border border-white/10 bg-[color:var(--surface-1)] p-6 sm:p-8">
-    <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">See what readers are talking about.</h1>
-    <p class="mt-4 max-w-3xl text-base text-[color:var(--text-muted)] sm:text-lg">Reviews, lists, reactions, and oddly specific manga opinions.</p>
-  </section>
+  <!-- Hero -->
+  <section class="relative mb-12 overflow-hidden rounded-3xl border border-white/10">
+    <!-- Background avatar mosaic -->
+    <div class="absolute inset-0 grid grid-cols-8 grid-rows-3 gap-px opacity-25">
+      {users.concat(users).slice(0, 24).map((u) => (
+        <img src={u.avatar} alt="" class="h-full w-full object-cover" loading="lazy" aria-hidden="true" />
+      ))}
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[color:var(--surface-0)] via-[color:var(--surface-0)]/90 to-[color:var(--surface-0)]/60"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[color:var(--surface-0)] via-transparent to-transparent"></div>
 
-  <section class="mb-12">
-    <SectionHeader title="Popular Reviews" subtitle="Recent reviews with momentum." />
-    <div class="grid gap-4 lg:grid-cols-2">
-      {reviews.map((review) => <ReviewCard review={review} user={userById[review.userId]} manga={mangaBySlug[review.mangaSlug]} />)}
+    <div class="relative grid gap-10 p-6 sm:p-10 lg:grid-cols-[1.2fr,0.8fr] lg:p-14">
+      <div>
+        <p class="mb-3 inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-[color:var(--primary)]">
+          <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-[color:var(--primary)]"></span>
+          Live community
+        </p>
+        <h1 class="text-4xl font-extrabold tracking-tight text-[color:var(--text-main)] sm:text-5xl lg:text-6xl">
+          See what readers are<br />talking about.
+        </h1>
+        <p class="mt-4 max-w-xl text-base text-[color:var(--text-muted)] sm:text-lg">
+          Reviews, lists, reactions, and oddly specific manga opinions — all from a community of
+          curators who actually finish what they start.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#popular-reviews" class="btn-primary">Browse reviews</a>
+          <a href="#discussions" class="btn-ghost">Join a thread</a>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-8 text-sm">
+          <div>
+            <p class="text-2xl font-bold text-[color:var(--text-main)]">{activeReaders}</p>
+            <p class="text-xs uppercase tracking-wider text-[color:var(--text-muted)]">Active readers</p>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-[color:var(--text-main)]">{totalReviews.toLocaleString()}</p>
+            <p class="text-xs uppercase tracking-wider text-[color:var(--text-muted)]">Reviews posted</p>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-[color:var(--text-main)]">{totalThreads}</p>
+            <p class="text-xs uppercase tracking-wider text-[color:var(--text-muted)]">Live threads</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured review highlight -->
+      <article class="relative overflow-hidden rounded-2xl border border-white/15 bg-[color:var(--surface-1)]/85 p-5 backdrop-blur-xl sm:p-6">
+        <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--primary)]">Review of the week</p>
+        <div class="flex gap-4">
+          <a href={`/manga/${topReviewManga.slug}`} class="shrink-0">
+            <img src={topReviewManga.cover} alt={`${topReviewManga.title} cover`} class="aspect-[2/3] w-20 rounded-lg border border-white/10 object-cover" loading="lazy" />
+          </a>
+          <div class="min-w-0">
+            <p class="text-xs uppercase tracking-wider text-[color:var(--text-muted)]">on</p>
+            <a href={`/manga/${topReviewManga.slug}`} class="block truncate text-base font-bold text-[color:var(--text-main)] hover:text-[color:var(--primary)]">{topReviewManga.title}</a>
+            <div class="mt-1.5 inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-xs">
+              <svg viewBox="0 0 24 24" class="h-3 w-3 text-[color:var(--primary)]" fill="currentColor" aria-hidden="true">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z" />
+              </svg>
+              {topReview.rating.toFixed(1)}
+            </div>
+          </div>
+        </div>
+        <p class="mt-4 text-sm leading-relaxed text-[color:var(--text-muted)]">"{topReview.text}"</p>
+        <div class="mt-5 flex items-center justify-between gap-3 border-t border-white/5 pt-4">
+          <div class="flex items-center gap-2.5">
+            <img src={topReviewUser.avatar} alt="" class="h-8 w-8 rounded-full border border-white/10 object-cover" />
+            <div class="leading-tight">
+              <p class="text-sm font-semibold text-[color:var(--text-main)]">{topReviewUser.username}</p>
+              <p class="text-xs text-[color:var(--text-muted)]">{topReview.likes} likes · {topReview.comments} replies</p>
+            </div>
+          </div>
+          <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-[color:var(--text-muted)] transition hover:border-[color:var(--primary)]/40 hover:text-[color:var(--primary)]" aria-label="Save review">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+          </button>
+        </div>
+      </article>
     </div>
   </section>
 
-  <section class="mb-12">
-    <SectionHeader title="Active Discussions" subtitle="Threads readers keep returning to." />
-    <div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
-      {discussions.map((discussion) => (
-        <DiscussionCard discussion={discussion} users={discussion.participantIds.map((id) => userById[id]).filter(Boolean)} />
+  <!-- Popular Reviews -->
+  <section id="popular-reviews" class="mb-16">
+    <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight">Popular Reviews</h2>
+        <p class="mt-1 text-sm text-[color:var(--text-muted)]">Recent reviews with momentum from the community.</p>
+      </div>
+      <a href="#" class="text-sm font-medium text-[color:var(--primary)] hover:underline">View all reviews →</a>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-2">
+      {reviewFilters.map((filter, i) => (
+        <button
+          type="button"
+          class:list={[
+            "rounded-full border px-3.5 py-1.5 text-xs font-medium transition",
+            i === 0
+              ? "border-transparent bg-[color:var(--primary)] text-[#23113d]"
+              : "border-white/10 bg-white/[0.03] text-[color:var(--text-muted)] hover:border-[color:var(--primary)]/40 hover:text-[color:var(--text-main)]"
+          ]}
+        >
+          {filter}
+        </button>
+      ))}
+    </div>
+
+    <div class="grid gap-4 lg:grid-cols-2">
+      {popularReviews.map((review) => (
+        <ReviewCard review={review} user={userById[review.userId]} manga={mangaBySlug[review.mangaSlug]} />
       ))}
     </div>
   </section>
 
-  <section class="mb-12">
-    <SectionHeader title="Featured Readers" subtitle="Community members with strong curation taste." />
+  <!-- Active Discussions -->
+  <section id="discussions" class="mb-16">
+    <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight">Active Discussions</h2>
+        <p class="mt-1 text-sm text-[color:var(--text-muted)]">Threads readers keep returning to.</p>
+      </div>
+      <button type="button" class="btn-primary text-sm">Start a thread</button>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-2 overflow-x-auto pb-1">
+      {discussionFilters.map((filter, i) => (
+        <button
+          type="button"
+          class:list={[
+            "shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-medium transition",
+            i === 0
+              ? "border-transparent bg-[color:var(--primary)] text-[#23113d]"
+              : "border-white/10 bg-white/[0.03] text-[color:var(--text-muted)] hover:border-[color:var(--primary)]/40 hover:text-[color:var(--text-main)]"
+          ]}
+        >
+          {filter}
+        </button>
+      ))}
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      {discussions.map((discussion) => (
+        <DiscussionCard
+          discussion={discussion}
+          users={discussion.participantIds.map((id) => userById[id]).filter(Boolean)}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Featured Readers -->
+  <section class="mb-16">
+    <div class="mb-5 flex items-end justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight">Featured Readers</h2>
+        <p class="mt-1 text-sm text-[color:var(--text-muted)]">Community members with strong curation taste.</p>
+      </div>
+      <a href="#" class="text-sm font-medium text-[color:var(--primary)] hover:underline">See all readers →</a>
+    </div>
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {featuredUsers.map((user) => <UserCard user={user} />)}
     </div>
   </section>
 
-  <section>
-    <SectionHeader title="Community Lists" subtitle="Curated list cards from active curators." />
-    <div class="grid gap-5 lg:grid-cols-2">
-      {collections.slice(0, 4).map((collection) => (
-        <CollectionCard collection={collection} curator={userById[collection.curatorId]} entries={collection.mangaSlugs.map((slug) => mangaBySlug[slug]).filter(Boolean)} />
+  <!-- Community Picks (rail) -->
+  <section class="mb-16">
+    <div class="mb-5 flex items-end justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight">Community Picks</h2>
+        <p class="mt-1 text-sm text-[color:var(--text-muted)]">One-line recommendations from active members.</p>
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {communityPicks.map((pick) => {
+        const u = userById[pick.userId];
+        const m = mangaBySlug[pick.mangaSlug];
+        return (
+          <article class="card-surface overflow-hidden p-0">
+            <a href={`/manga/${m.slug}`} class="block">
+              <div class="relative aspect-[3/4] overflow-hidden">
+                <img src={m.cover} alt={`${m.title} cover`} class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[color:var(--surface-1)] via-[color:var(--surface-1)]/30 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 p-4">
+                  <h3 class="text-base font-bold text-white drop-shadow-md">{m.title}</h3>
+                </div>
+              </div>
+            </a>
+            <div class="p-4">
+              <p class="mb-3 text-sm leading-relaxed text-[color:var(--text-muted)]">"{pick.quote}"</p>
+              <div class="flex items-center gap-2.5 border-t border-white/5 pt-3">
+                <img src={u.avatar} alt="" class="h-7 w-7 rounded-full border border-white/10 object-cover" />
+                <div class="leading-tight">
+                  <p class="text-xs text-[color:var(--text-muted)]">recommended by</p>
+                  <p class="text-sm font-semibold text-[color:var(--text-main)]">{u.username}</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- Community Collections -->
+  <section class="mb-16">
+    <div class="mb-5 flex items-end justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight">Community Collections</h2>
+        <p class="mt-1 text-sm text-[color:var(--text-muted)]">Curated reading stacks from active community curators.</p>
+      </div>
+      <a href="/collections" class="text-sm font-medium text-[color:var(--primary)] hover:underline">All collections →</a>
+    </div>
+    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {featuredCollections.map((collection) => (
+        <CollectionCard
+          collection={collection}
+          curator={userById[collection.curatorId]}
+          entries={collection.mangaSlugs.map((slug) => mangaBySlug[slug]).filter(Boolean)}
+        />
       ))}
+    </div>
+  </section>
+
+  <!-- Join CTA -->
+  <section class="mb-4 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[color:var(--surface-1)] via-[color:var(--surface-1)] to-[color:var(--surface-2)] p-8 text-center sm:p-12">
+    <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Join the conversation.</h2>
+    <p class="mx-auto mt-3 max-w-2xl text-sm text-[color:var(--text-muted)]">
+      Drop a review, start a thread, or curate the next collection that defines a genre.
+    </p>
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      <a href="#" class="btn-primary">Create account</a>
+      <a href="#discussions" class="btn-ghost">Browse threads</a>
     </div>
   </section>
 </AppLayout>

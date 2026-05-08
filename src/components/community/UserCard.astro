@@ -8,20 +8,43 @@ interface Props {
 const { user } = Astro.props;
 ---
 
-<article class="card-surface p-5">
-  <div class="mb-4 flex items-center gap-3">
-    <img src={user.avatar} alt={`${user.username} avatar`} class="h-12 w-12 rounded-full object-cover" loading="lazy" />
-    <div>
-      <h3 class="text-sm font-semibold text-[color:var(--text-main)]">{user.username}</h3>
-      <p class="text-xs text-[color:var(--text-muted)]">{user.followers} followers</p>
-    </div>
+<article class="card-surface group relative flex flex-col items-center gap-4 overflow-hidden p-6 text-center">
+  <!-- Decorative gradient -->
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[color:var(--primary)]/15 to-transparent"></div>
+
+  <div class="relative">
+    <div class="absolute -inset-1 rounded-full bg-gradient-to-tr from-[color:var(--primary)] via-[color:var(--tertiary)] to-[color:var(--secondary)] opacity-60 blur-sm transition group-hover:opacity-90"></div>
+    <img
+      src={user.avatar}
+      alt={`${user.username} avatar`}
+      class="relative h-16 w-16 rounded-full border-2 border-[color:var(--surface-1)] object-cover"
+      loading="lazy"
+    />
   </div>
-  <p class="mb-3 text-sm text-[color:var(--text-muted)]">{user.bio}</p>
-  <p class="mb-3 text-xs text-[color:var(--text-muted)]">Reads this month: {user.readsThisMonth}</p>
-  <div class="mb-4 flex flex-wrap gap-2">
+
+  <div>
+    <h3 class="text-base font-semibold text-[color:var(--text-main)]">{user.username}</h3>
+    <p class="mt-0.5 text-xs text-[color:var(--text-muted)]">{user.followers} followers</p>
+  </div>
+
+  <p class="line-clamp-2 text-xs leading-relaxed text-[color:var(--text-muted)]">{user.bio}</p>
+
+  <div class="flex flex-wrap justify-center gap-1.5">
     {user.favoriteGenres.slice(0, 2).map((genre) => (
-      <span class="rounded-full bg-[color:var(--surface-2)] px-2.5 py-1 text-xs text-[color:var(--text-muted)]">{genre}</span>
+      <span class="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-0.5 text-[11px] text-[color:var(--text-muted)]">{genre}</span>
     ))}
   </div>
-  <button type="button" class="btn-ghost w-full text-sm">Follow</button>
+
+  <div class="grid w-full grid-cols-2 gap-2 border-t border-white/5 pt-4 text-center">
+    <div>
+      <p class="text-sm font-bold text-[color:var(--text-main)]">{user.readsThisMonth}</p>
+      <p class="text-[10px] uppercase tracking-wider text-[color:var(--text-muted)]">Reads/mo</p>
+    </div>
+    <div>
+      <p class="text-sm font-bold text-[color:var(--text-main)]">{user.favoriteGenres.length}</p>
+      <p class="text-[10px] uppercase tracking-wider text-[color:var(--text-muted)]">Genres</p>
+    </div>
+  </div>
+
+  <button type="button" class="btn-primary w-full text-sm">Follow</button>
 </article>
