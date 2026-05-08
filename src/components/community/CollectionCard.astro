@@ -5,24 +5,69 @@ interface Props {
   collection: Collection;
   curator: User;
   entries: Manga[];
+  href?: string;
 }
 
-const { collection, curator, entries } = Astro.props;
+const { collection, curator, entries, href = "#" } = Astro.props;
+const tiles = entries.slice(0, 4);
+const remaining = Math.max(0, collection.mangaSlugs.length - tiles.length);
 ---
 
-<article class="card-surface overflow-hidden p-6">
-  <div class="mb-4 flex items-center justify-between gap-3">
-    <div>
-      <h3 class="text-xl font-semibold tracking-tight text-[color:var(--text-main)]">{collection.title}</h3>
-      <p class="text-sm text-[color:var(--text-muted)]">Curated by {curator.username}</p>
+<a
+  href={href}
+  class="card-surface group relative flex flex-col overflow-hidden p-0 transition focus-visible:outline-2 focus-visible:outline-[color:var(--primary-strong)]"
+>
+  <!-- Mosaic header -->
+  <div class="relative aspect-[16/9] w-full overflow-hidden">
+    <div class="grid h-full w-full grid-cols-2 grid-rows-2 gap-px bg-[color:var(--surface-0)]">
+      {Array.from({ length: 4 }).map((_, i) => {
+        const entry = tiles[i % Math.max(tiles.length, 1)];
+        return entry ? (
+          <img
+            src={entry.cover}
+            alt={`${entry.title} cover`}
+            class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+            loading="lazy"
+          />
+        ) : (
+          <div class="h-full w-full bg-[color:var(--surface-2)]"></div>
+        );
+      })}
     </div>
-    <span class="rounded-full bg-[color:var(--surface-2)] px-3 py-1 text-xs text-[color:var(--text-muted)]">{collection.mangaSlugs.length} titles</span>
+    <!-- Bottom gradient mask -->
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[color:var(--surface-1)] via-[color:var(--surface-1)]/30 to-transparent"></div>
+    <!-- Title overlay -->
+    <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 sm:p-5">
+      <h3 class="text-lg font-bold leading-tight tracking-tight text-white drop-shadow-md sm:text-xl">{collection.title}</h3>
+      <span class="shrink-0 rounded-full border border-white/20 bg-black/40 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
+        {collection.mangaSlugs.length} titles
+      </span>
+    </div>
   </div>
-  <p class="mb-5 text-sm leading-relaxed text-[color:var(--text-muted)]">{collection.description}</p>
-  <div class="mb-5 flex -space-x-3 overflow-hidden">
-    {entries.slice(0, 5).map((entry) => (
-      <img src={entry.cover} alt={`${entry.title} cover`} class="h-28 w-20 rounded-lg border border-[color:var(--surface-0)] object-cover" loading="lazy" />
-    ))}
+
+  <!-- Body -->
+  <div class="flex flex-1 flex-col gap-4 p-5">
+    <p class="line-clamp-2 text-sm leading-relaxed text-[color:var(--text-muted)]">{collection.description}</p>
+
+    <div class="mt-auto flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <img
+          src={curator.avatar}
+          alt={`${curator.username} avatar`}
+          class="h-8 w-8 rounded-full border border-white/10 object-cover"
+          loading="lazy"
+        />
+        <div class="leading-tight">
+          <p class="text-xs uppercase tracking-wider text-[color:var(--text-muted)]">Curated by</p>
+          <p class="text-sm font-semibold text-[color:var(--text-main)]">{curator.username}</p>
+        </div>
+      </div>
+      <span class="inline-flex items-center gap-1.5 text-sm font-medium text-[color:var(--primary)] transition group-hover:gap-2.5">
+        View
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <path d="M5 12h14M13 5l7 7-7 7" />
+        </svg>
+      </span>
+    </div>
   </div>
-  <button type="button" class="btn-ghost text-sm">View Collection</button>
-</article>
+</a>

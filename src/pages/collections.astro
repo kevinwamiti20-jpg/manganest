@@ -1,23 +1,134 @@
 ---
 import AppLayout from "../layouts/AppLayout.astro";
-import SectionHeader from "../components/ui/SectionHeader.astro";
 import CollectionCard from "../components/community/CollectionCard.astro";
 import { collections } from "../data/collections";
 import { mangaBySlug, userById } from "../data/index";
+
+const featured = collections[0];
+const featuredEntries = featured.mangaSlugs.map((slug) => mangaBySlug[slug]).filter(Boolean);
+const featuredCurator = userById[featured.curatorId];
+const restCollections = collections.slice(1);
+
+const filters = ["All", "Dark Fantasy", "Romance", "Action", "Slice of Life", "Psychological", "Sci-Fi"];
+
+const totalTitles = collections.reduce((sum, c) => sum + c.mangaSlugs.length, 0);
+const curatorCount = new Set(collections.map((c) => c.curatorId)).size;
 ---
 
 <AppLayout
   title="Collections | MangaNest"
   description="Editorial manga collections for curated discovery on MangaNest."
 >
-  <section class="mb-10">
-    <SectionHeader title="Collections" subtitle="Curated discovery lists from the MangaNest community." />
-    <p class="max-w-3xl text-sm text-[color:var(--text-muted)]">Browse themed reading stacks ranging from dark fantasy deep cuts to cozy comfort picks.</p>
+  <!-- Hero -->
+  <section class="relative mb-12 overflow-hidden rounded-3xl border border-white/10">
+    <!-- Background mosaic -->
+    <div class="absolute inset-0 grid grid-cols-4 grid-rows-2">
+      {featuredEntries.slice(0, 8).concat(featuredEntries).slice(0, 8).map((entry) => (
+        <img src={entry.cover} alt="" class="h-full w-full object-cover opacity-60" loading="lazy" aria-hidden="true" />
+      ))}
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[color:var(--surface-0)] via-[color:var(--surface-0)]/85 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[color:var(--surface-0)] via-transparent to-transparent"></div>
+
+    <div class="relative grid gap-10 p-6 sm:p-10 lg:grid-cols-[1.2fr,0.8fr] lg:p-14">
+      <div>
+        <p class="mb-3 text-xs uppercase tracking-[0.25em] text-[color:var(--primary)]">Editorial</p>
+        <h1 class="text-4xl font-extrabold tracking-tight text-[color:var(--text-main)] sm:text-5xl lg:text-6xl">
+          Collections
+        </h1>
+        <p class="mt-4 max-w-xl text-base text-[color:var(--text-muted)] sm:text-lg">
+          Curated reading stacks from the MangaNest community — themed deep dives, comfort picks, and
+          underrated discoveries from trusted curators.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-6 text-sm">
+          <div>
+            <p class="text-2xl font-bold text-[color:var(--text-main)]">{collections.length}</p>
+            <p class="text-xs uppercase tracking-wider text-[color:var(--text-muted)]">Collections</p>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-[color:var(--text-main)]">{totalTitles}</p>
+            <p class="text-xs uppercase tracking-wider text-[color:var(--text-muted)]">Titles featured</p>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-[color:var(--text-main)]">{curatorCount}</p>
+            <p class="text-xs uppercase tracking-wider text-[color:var(--text-muted)]">Active curators</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured collection card -->
+      <div class="relative overflow-hidden rounded-2xl border border-white/15 bg-[color:var(--surface-1)]/80 p-5 backdrop-blur-xl sm:p-6">
+        <p class="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--primary)]">Featured this week</p>
+        <h2 class="text-2xl font-bold tracking-tight text-[color:var(--text-main)]">{featured.title}</h2>
+        <p class="mt-2 text-sm text-[color:var(--text-muted)]">{featured.description}</p>
+        <div class="mt-5 flex -space-x-3">
+          {featuredEntries.slice(0, 5).map((entry) => (
+            <img
+              src={entry.cover}
+              alt={`${entry.title} cover`}
+              class="h-20 w-14 rounded-lg border-2 border-[color:var(--surface-1)] object-cover"
+              loading="lazy"
+            />
+          ))}
+        </div>
+        <div class="mt-5 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <img src={featuredCurator.avatar} alt="" class="h-8 w-8 rounded-full border border-white/10 object-cover" />
+            <p class="text-sm text-[color:var(--text-muted)]">
+              by <span class="font-semibold text-[color:var(--text-main)]">{featuredCurator.username}</span>
+            </p>
+          </div>
+          <a href="#all-collections" class="btn-primary text-sm">Open</a>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section class="grid gap-5 lg:grid-cols-2">
-    {collections.map((collection) => (
-      <CollectionCard collection={collection} curator={userById[collection.curatorId]} entries={collection.mangaSlugs.map((slug) => mangaBySlug[slug]).filter(Boolean)} />
+  <!-- Filter pills -->
+  <section class="mb-8 flex flex-wrap items-center gap-2" aria-label="Filter collections">
+    {filters.map((filter, i) => (
+      <button
+        type="button"
+        class:list={[
+          "rounded-full border px-4 py-1.5 text-sm font-medium transition",
+          i === 0
+            ? "border-transparent bg-[color:var(--primary)] text-[#23113d]"
+            : "border-white/10 bg-white/[0.03] text-[color:var(--text-muted)] hover:border-[color:var(--primary)]/40 hover:text-[color:var(--text-main)]"
+        ]}
+      >
+        {filter}
+      </button>
     ))}
+  </section>
+
+  <!-- All collections grid -->
+  <section id="all-collections" class="mb-16">
+    <div class="mb-6 flex items-end justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight text-[color:var(--text-main)]">All collections</h2>
+        <p class="mt-1 text-sm text-[color:var(--text-muted)]">Browse every curated stack on MangaNest.</p>
+      </div>
+      <button type="button" class="btn-ghost text-sm">Sort: Recent</button>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {restCollections.map((collection) => (
+        <CollectionCard
+          collection={collection}
+          curator={userById[collection.curatorId]}
+          entries={collection.mangaSlugs.map((slug) => mangaBySlug[slug]).filter(Boolean)}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mb-4 rounded-3xl border border-white/10 bg-gradient-to-br from-[color:var(--surface-1)] to-[color:var(--surface-2)] p-8 text-center sm:p-12">
+    <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Curate your own collection.</h2>
+    <p class="mx-auto mt-3 max-w-2xl text-sm text-[color:var(--text-muted)]">
+      Build a themed stack, share it with the community, and help readers discover their next obsession.
+    </p>
+    <a href="/community" class="btn-primary mt-5 inline-flex">Start a collection</a>
   </section>
 </AppLayout>
