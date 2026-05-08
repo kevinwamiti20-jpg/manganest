@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import AppLayout from "../layouts/AppLayout.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
 import MangaCard from "../components/manga/MangaCard.astro";
 import { manga } from "../data/manga";
@@ -8,7 +8,7 @@ import { genres } from "../data/genres";
 const statuses = ["All", "Ongoing", "Completed", "Hiatus"];
 ---
 
-<BaseLayout
+<AppLayout
   title="Explore Manga | MangaNest"
   description="Search and browse manga by genre, status, and rating on MangaNest."
 >
@@ -50,4 +50,4 @@ const statuses = ["All", "Ongoing", "Completed", "Hiatus"];
       {manga.map((item) => <MangaCard item={item} />)}
     </div>
   </section>
-</BaseLayout>
+</AppLayout>

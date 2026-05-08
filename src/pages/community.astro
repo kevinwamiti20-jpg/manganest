@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import AppLayout from "../layouts/AppLayout.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
 import ReviewCard from "../components/community/ReviewCard.astro";
 import DiscussionCard from "../components/community/DiscussionCard.astro";
@@ -14,7 +14,7 @@ import { mangaBySlug, userById } from "../data/index";
 const featuredUsers = users.slice(0, 4);
 ---
 
-<BaseLayout
+<AppLayout
   title="Community | MangaNest"
   description="See what MangaNest readers are reviewing, discussing, and curating this week."
 >
@@ -54,4 +54,4 @@ const featuredUsers = users.slice(0, 4);
       ))}
     </div>
   </section>
-</BaseLayout>
+</AppLayout>

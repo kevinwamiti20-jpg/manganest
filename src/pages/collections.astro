@@ -1,12 +1,12 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import AppLayout from "../layouts/AppLayout.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
 import CollectionCard from "../components/community/CollectionCard.astro";
 import { collections } from "../data/collections";
 import { mangaBySlug, userById } from "../data/index";
 ---
 
-<BaseLayout
+<AppLayout
   title="Collections | MangaNest"
   description="Editorial manga collections for curated discovery on MangaNest."
 >
@@ -20,4 +20,4 @@ import { mangaBySlug, userById } from "../data/index";
       <CollectionCard collection={collection} curator={userById[collection.curatorId]} entries={collection.mangaSlugs.map((slug) => mangaBySlug[slug]).filter(Boolean)} />
     ))}
   </section>
-</BaseLayout>
+</AppLayout>
