@@ -1,43 +1,74 @@
-# Astro Starter Kit: Minimal
+# MangaNest
 
-```sh
-npm create astro@latest -- --template minimal
-```
+MangaNest is a cinematic, community-driven manga discovery experience built with Astro and Tailwind CSS. The app focuses on fast navigation across discovery surfaces such as Home, Explore, Community, Collections, and manga detail pages.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Project Description
 
-## 🚀 Project Structure
+MangaNest is designed for readers who want to:
 
-Inside of your Astro project, you'll see the following folders and files:
+- discover new manga quickly,
+- track what is trending,
+- browse curated collections,
+- and use community signals (reviews, discussion, picks) to decide what to read next.
+
+The interface balances expressive visual direction with task-oriented navigation so repeat visits stay fast and predictable.
+
+## Design Source
+
+The current UI direction and page design were created using Google Stitch and adapted in this Astro codebase.
+
+- Stitch project: https://stitch.withgoogle.com/projects/12082988534869457620
+
+## Tech Stack
+
+- Astro 6
+- Tailwind CSS 4 (`@tailwindcss/vite`)
+- TypeScript config via Astro defaults
+
+## Setup Instructions
+
+1. Install dependencies:
+
+	```bash
+	pnpm install
+	```
+
+2. Start local development:
+
+	```bash
+	pnpm dev
+	```
+
+3. Build for production:
+
+	```bash
+	pnpm build
+	```
+
+4. Preview production build locally:
+
+	```bash
+	pnpm preview
+	```
+
+## Available Scripts
+
+- `pnpm dev`: start Astro dev server
+- `pnpm build`: create production build in `dist/`
+- `pnpm preview`: run production preview server
+- `pnpm astro ...`: run Astro CLI commands
+
+## Project Structure
 
 ```text
-/
+.
 ├── public/
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/
+│   ├── layouts/
+│   ├── pages/
+│   └── styles/
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
 ```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

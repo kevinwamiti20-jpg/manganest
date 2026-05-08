@@ -63,9 +63,9 @@ const navAvatarImage =
               href={link.href}
               aria-current={isActive ? "page" : undefined}
               class:list={[
-                "relative pb-1 transition",
+                "app-nav-link font-medium",
                 isActive
-                  ? "font-semibold text-[color:var(--text-main)] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-[color:var(--primary)]"
+                  ? "font-semibold"
                   : "text-[color:var(--text-muted)] hover:text-[color:var(--text-main)]"
               ]}
             >
@@ -161,7 +161,7 @@ const navAvatarImage =
             href={link.href}
             aria-current={isActive ? "page" : undefined}
             class:list={[
-              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition",
+              "nav-row-link flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm",
               isActive
                 ? "bg-[color:var(--primary)]/15 font-semibold text-[color:var(--primary)]"
                 : "text-[color:var(--text-muted)] hover:bg-white/5 hover:text-[color:var(--text-main)]"
@@ -179,7 +179,7 @@ const navAvatarImage =
         <a
           href="#"
           class:list={[
-            "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition",
+            "nav-row-link flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm",
             link.active
               ? "bg-[color:var(--primary)]/15 text-[color:var(--primary)]"
               : "text-[color:var(--text-muted)] hover:bg-white/5 hover:text-[color:var(--text-main)]"
@@ -207,7 +207,7 @@ const navAvatarImage =
         <a
           href="#"
           class:list={[
-            "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition",
+            "nav-row-link flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm",
             link.active
               ? "bg-[color:var(--primary)]/15 text-[color:var(--primary)]"
               : "text-[color:var(--text-muted)] hover:bg-white/5 hover:text-[color:var(--text-main)]"
