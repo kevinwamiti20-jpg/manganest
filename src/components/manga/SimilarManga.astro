@@ -1,0 +1,14 @@
+---
+import type { Manga } from "../../data/types";
+import MangaCard from "./MangaCard.astro";
+
+interface Props {
+  items: Manga[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  {items.map((item) => <MangaCard item={item} />)}
+</div>

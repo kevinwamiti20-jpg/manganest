@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import MangaCard from "../components/manga/MangaCard.astro";
+import { manga } from "../data/manga";
+import { genres } from "../data/genres";
+
+const statuses = ["All", "Ongoing", "Completed", "Hiatus"];
+---
+
+<BaseLayout
+  title="Explore Manga | MangaNest"
+  description="Search and browse manga by genre, status, and rating on MangaNest."
+>
+  <section class="mb-8">
+    <SectionHeader title="Explore Manga" subtitle="Find your next read by mood, genre, and release rhythm." />
+    <div class="card-surface p-4 sm:p-5">
+      <div class="grid gap-4 lg:grid-cols-[1.2fr,1fr]">
+        <label class="flex flex-col gap-2 text-sm">
+          <span class="text-[color:var(--text-muted)]">Search titles</span>
+          <input type="search" placeholder="Search manga..." class="rounded-xl border border-white/10 bg-[color:var(--surface-0)] px-4 py-2.5 text-sm text-[color:var(--text-main)] focus:border-[color:var(--primary-strong)] focus:outline-none" />
+        </label>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <label class="flex flex-col gap-2 text-sm">
+            <span class="text-[color:var(--text-muted)]">Sort</span>
+            <select class="rounded-xl border border-white/10 bg-[color:var(--surface-0)] px-3 py-2.5 text-sm text-[color:var(--text-main)] focus:border-[color:var(--primary-strong)] focus:outline-none">
+              <option>Trending</option>
+              <option>Highest rated</option>
+              <option>Recently updated</option>
+              <option>Newest</option>
+            </select>
+          </label>
+          <div class="flex flex-wrap items-end gap-2 pb-0.5">
+            {statuses.map((status) => (
+              <button type="button" class="btn-ghost text-xs">{status}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 flex snap-x gap-2 overflow-x-auto pb-2">
+        {genres.map((genre) => (
+          <button type="button" class="shrink-0 snap-start rounded-full border border-white/10 bg-[color:var(--surface-2)] px-3 py-1.5 text-xs text-[color:var(--text-muted)] hover:border-[color:var(--primary-strong)]">{genre}</button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+      {manga.map((item) => <MangaCard item={item} />)}
+    </div>
+  </section>
+</BaseLayout>

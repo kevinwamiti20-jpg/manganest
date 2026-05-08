@@ -1,0 +1,12 @@
+---
+interface Props {
+  src: string;
+  index: number;
+}
+
+const { src, index } = Astro.props;
+---
+
+<figure class="mx-auto mb-4 max-w-4xl overflow-hidden rounded-xl border border-white/10 bg-[color:var(--surface-1)]">
+  <img src={src} alt={`Manga panel ${index + 1}`} class="h-auto w-full object-cover" loading="lazy" />
+</figure>

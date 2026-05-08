@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import ReviewCard from "../components/community/ReviewCard.astro";
+import DiscussionCard from "../components/community/DiscussionCard.astro";
+import UserCard from "../components/community/UserCard.astro";
+import CollectionCard from "../components/community/CollectionCard.astro";
+import { reviews } from "../data/reviews";
+import { discussions } from "../data/discussions";
+import { users } from "../data/users";
+import { collections } from "../data/collections";
+import { mangaBySlug, userById } from "../data/index";
+
+const featuredUsers = users.slice(0, 4);
+---
+
+<BaseLayout
+  title="Community | MangaNest"
+  description="See what MangaNest readers are reviewing, discussing, and curating this week."
+>
+  <section class="mb-12 rounded-2xl border border-white/10 bg-[color:var(--surface-1)] p-6 sm:p-8">
+    <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">See what readers are talking about.</h1>
+    <p class="mt-4 max-w-3xl text-base text-[color:var(--text-muted)] sm:text-lg">Reviews, lists, reactions, and oddly specific manga opinions.</p>
+  </section>
+
+  <section class="mb-12">
+    <SectionHeader title="Popular Reviews" subtitle="Recent reviews with momentum." />
+    <div class="grid gap-4 lg:grid-cols-2">
+      {reviews.map((review) => <ReviewCard review={review} user={userById[review.userId]} manga={mangaBySlug[review.mangaSlug]} />)}
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <SectionHeader title="Active Discussions" subtitle="Threads readers keep returning to." />
+    <div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+      {discussions.map((discussion) => (
+        <DiscussionCard discussion={discussion} users={discussion.participantIds.map((id) => userById[id]).filter(Boolean)} />
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <SectionHeader title="Featured Readers" subtitle="Community members with strong curation taste." />
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {featuredUsers.map((user) => <UserCard user={user} />)}
+    </div>
+  </section>
+
+  <section>
+    <SectionHeader title="Community Lists" subtitle="Curated list cards from active curators." />
+    <div class="grid gap-5 lg:grid-cols-2">
+      {collections.slice(0, 4).map((collection) => (
+        <CollectionCard collection={collection} curator={userById[collection.curatorId]} entries={collection.mangaSlugs.map((slug) => mangaBySlug[slug]).filter(Boolean)} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

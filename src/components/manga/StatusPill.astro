@@ -1,0 +1,12 @@
+---
+import type { MangaStatus } from "../../data/types";
+
+interface Props {
+  status: MangaStatus;
+}
+
+const { status } = Astro.props;
+const tone = status === "Ongoing" ? "bg-cyan-400/15 text-cyan-200" : status === "Completed" ? "bg-emerald-400/15 text-emerald-200" : "bg-amber-400/15 text-amber-200";
+---
+
+<span class:list={["inline-flex rounded-full px-2.5 py-1 text-xs font-medium", tone]}>{status}</span>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="p" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1c2430"/>
+      <stop offset="100%" stop-color="#10161f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#p)"/>
+  <rect x="70" y="70" width="1060" height="1460" fill="none" stroke="#958ea0" stroke-opacity="0.35"/>
+  <text x="90" y="150" fill="#dce3f0" font-family="Arial, sans-serif" font-size="48" font-weight="700">MangaNest Reader Panel</text>
+</svg>

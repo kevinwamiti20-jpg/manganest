@@ -1,0 +1,24 @@
+---
+import type { Chapter } from "../../data/types";
+
+interface Props {
+  slug: string;
+  chapters: Chapter[];
+}
+
+const { slug, chapters } = Astro.props;
+---
+
+<section class="card-surface p-4 sm:p-6" aria-label="Chapter list">
+  <div class="space-y-3">
+    {chapters.map((chapter) => (
+      <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.02] p-3 sm:p-4">
+        <div>
+          <p class="text-sm font-semibold text-[color:var(--text-main)]">Chapter {chapter.number}: {chapter.title}</p>
+          <p class="text-xs text-[color:var(--text-muted)]">Released {chapter.releaseDate}</p>
+        </div>
+        <a href={`/read/${slug}/${chapter.number}`} class="btn-ghost text-sm">Read</a>
+      </div>
+    ))}
+  </div>
+</section>

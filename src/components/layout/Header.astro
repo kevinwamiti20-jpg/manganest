@@ -1,0 +1,29 @@
+---
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/explore", label: "Explore" },
+  { href: "/community", label: "Community" },
+  { href: "/collections", label: "Collections" }
+];
+---
+
+<header class="sticky top-0 z-40 border-b border-white/10 bg-[color:var(--surface-0)]/80 backdrop-blur-xl">
+  <div class="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-4 py-4 sm:px-6 lg:px-10">
+    <a href="/" class="text-xl font-semibold tracking-tight text-[color:var(--text-main)]">MangaNest</a>
+    <nav class="hidden items-center gap-6 md:flex" aria-label="Primary">
+      {links.map((link) => (
+        <a href={link.href} class="nav-link">{link.label}</a>
+      ))}
+      <a href="/explore" class="btn-primary">Start Reading</a>
+    </nav>
+    <details class="md:hidden">
+      <summary class="btn-ghost list-none px-3 py-2 text-sm">Menu</summary>
+      <nav class="menu-pop mt-3 min-w-44 p-2" aria-label="Mobile">
+        {links.map((link) => (
+          <a href={link.href} class="block rounded-md px-3 py-2 text-sm text-[color:var(--text-main)] hover:bg-white/5">{link.label}</a>
+        ))}
+        <a href="/explore" class="mt-2 block rounded-md bg-[color:var(--primary)] px-3 py-2 text-sm font-medium text-[color:var(--surface-0)]">Start Reading</a>
+      </nav>
+    </details>
+  </div>
+</header>

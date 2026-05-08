@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import CollectionCard from "../components/community/CollectionCard.astro";
+import { collections } from "../data/collections";
+import { mangaBySlug, userById } from "../data/index";
+---
+
+<BaseLayout
+  title="Collections | MangaNest"
+  description="Editorial manga collections for curated discovery on MangaNest."
+>
+  <section class="mb-10">
+    <SectionHeader title="Collections" subtitle="Curated discovery lists from the MangaNest community." />
+    <p class="max-w-3xl text-sm text-[color:var(--text-muted)]">Browse themed reading stacks ranging from dark fantasy deep cuts to cozy comfort picks.</p>
+  </section>
+
+  <section class="grid gap-5 lg:grid-cols-2">
+    {collections.map((collection) => (
+      <CollectionCard collection={collection} curator={userById[collection.curatorId]} entries={collection.mangaSlugs.map((slug) => mangaBySlug[slug]).filter(Boolean)} />
+    ))}
+  </section>
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+import type { Review, User, Manga } from "../../data/types";
+import RatingBadge from "../manga/RatingBadge.astro";
+
+interface Props {
+  review: Review;
+  user: User;
+  manga: Manga;
+}
+
+const { review, user, manga } = Astro.props;
+---
+
+<article class="card-surface p-5">
+  <div class="mb-4 flex items-center gap-3">
+    <img src={user.avatar} alt={`${user.username} avatar`} class="h-10 w-10 rounded-full object-cover" loading="lazy" />
+    <div>
+      <p class="text-sm font-semibold text-[color:var(--text-main)]">{user.username}</p>
+      <p class="text-xs text-[color:var(--text-muted)]">on {manga.title} • {review.createdAt}</p>
+    </div>
+  </div>
+  <div class="mb-3 flex items-center justify-between">
+    <RatingBadge rating={review.rating} />
+    <p class="text-xs text-[color:var(--text-muted)]">{review.likes} likes • {review.comments} comments</p>
+  </div>
+  <p class="text-sm leading-relaxed text-[color:var(--text-muted)]">{review.text}</p>
+</article>

@@ -1,17 +1,118 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import MangaCard from "../components/manga/MangaCard.astro";
+import MangaCompactCard from "../components/manga/MangaCompactCard.astro";
+import GenreChip from "../components/manga/GenreChip.astro";
+import CommunityPulse from "../components/community/CommunityPulse.astro";
+import { manga } from "../data/manga";
+import { communityPicks, reviews } from "../data/reviews";
+import { collections } from "../data/collections";
+import { users } from "../data/users";
+import { genres } from "../data/genres";
+import { mangaBySlug, userById } from "../data/index";
 
+const trending = manga.slice(0, 4);
+const updates = [...manga].sort((a, b) => a.latestChapter - b.latestChapter).reverse().slice(0, 6);
+const featuredCollection = collections[0];
+const featuredEntries = featuredCollection.mangaSlugs.map((slug) => mangaBySlug[slug]).filter(Boolean);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+	title="MangaNest | Discover manga worth obsessing over"
+	description="Track trending titles, explore hidden gems, and see what the community is reading on MangaNest."
+>
+	<section class="relative overflow-hidden rounded-2xl border border-white/10 bg-[color:var(--surface-1)] p-6 sm:p-8 lg:p-10">
+		<div class="grid items-center gap-8 lg:grid-cols-[1.1fr,0.9fr]">
+			<div>
+				<p class="mb-3 text-xs uppercase tracking-[0.18em] text-[color:var(--text-muted)]">MangaNest discovery</p>
+				<h1 class="text-4xl font-extrabold tracking-tight text-[color:var(--text-main)] sm:text-5xl">Discover manga worth obsessing over.</h1>
+				<p class="mt-4 max-w-2xl text-base text-[color:var(--text-muted)] sm:text-lg">Track trending titles, explore hidden gems, and see what the community is reading.</p>
+				<div class="mt-7 flex flex-wrap gap-3">
+					<a href="/explore" class="btn-primary">Start Exploring</a>
+					<a href="/community" class="btn-ghost">View Community Picks</a>
+				</div>
+				<div class="mt-8 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+					<div class="card-surface p-3"><p class="font-semibold">240+ titles</p></div>
+					<div class="card-surface p-3"><p class="font-semibold">18 genres</p></div>
+					<div class="card-surface p-3"><p class="font-semibold">12k reader actions</p></div>
+					<div class="card-surface p-3"><p class="font-semibold">Weekly community picks</p></div>
+				</div>
+			</div>
+			<a href={`/manga/${trending[0].slug}`} class="card-surface group block overflow-hidden">
+				<img src={trending[0].banner} alt={`${trending[0].title} featured banner`} class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]" />
+			</a>
+		</div>
+	</section>
+
+	<section class="mt-12">
+		<SectionHeader title="Trending Now" subtitle="Fast-rising titles with strong weekly momentum." href="/explore" actionLabel="Browse all" />
+		<div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+			{trending.map((item) => <MangaCard item={item} />)}
+		</div>
+	</section>
+
+	<section class="mt-12">
+		<SectionHeader title="Recently Updated" subtitle="Fresh chapter drops from across the catalog." />
+		<div class="grid gap-3 lg:grid-cols-2">
+			{updates.map((item) => <MangaCompactCard item={item} />)}
+		</div>
+	</section>
+
+	<section class="mt-12">
+		<SectionHeader title="Browse by Mood" subtitle="Pick the vibe first, choose the series second." />
+		<div class="flex snap-x gap-3 overflow-x-auto pb-2">
+			{genres.slice(0, 10).map((genre) => (
+				<div class="shrink-0 snap-start">
+					<GenreChip label={genre} />
+				</div>
+			))}
+		</div>
+	</section>
+
+	<section class="mt-12">
+		<SectionHeader title="Community Picks" subtitle="Reader-curated recommendations from active members." href="/community" actionLabel="See discussions" />
+		<div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
+			{communityPicks.map((pick) => {
+				const user = userById[pick.userId];
+				const title = mangaBySlug[pick.mangaSlug];
+				return (
+					<article class="card-surface p-4">
+						<div class="mb-3 flex items-center gap-3">
+							<img src={user.avatar} alt={`${user.username} avatar`} class="h-9 w-9 rounded-full object-cover" loading="lazy" />
+							<p class="text-sm font-medium">{user.username}</p>
+						</div>
+						<p class="mb-3 text-sm text-[color:var(--text-muted)]">"{pick.quote}"</p>
+						<img src={title.cover} alt={`${title.title} cover`} class="mb-3 aspect-[2/3] w-full rounded-lg object-cover" loading="lazy" />
+						<a href={`/manga/${title.slug}`} class="btn-ghost text-sm">Read pick</a>
+					</article>
+				);
+			})}
+		</div>
+	</section>
+
+	<section class="mt-12 card-surface p-6 sm:p-8">
+		<SectionHeader title="Featured Collection" subtitle="Dark fantasy reads for rainy nights" />
+		<p class="mb-4 max-w-3xl text-sm text-[color:var(--text-muted)]">Brooding worlds, dangerous bargains, and protagonists who probably need therapy.</p>
+		<div class="mb-5 flex -space-x-4">
+			{featuredEntries.slice(0, 4).map((entry) => (
+				<img src={entry.cover} alt={`${entry.title} cover`} class="h-36 w-24 rounded-xl border border-[color:var(--surface-0)] object-cover" loading="lazy" />
+			))}
+		</div>
+		<a href="/collections" class="btn-ghost text-sm">View more collections</a>
+	</section>
+
+	<section class="mt-12">
+		<SectionHeader title="Community Pulse" subtitle="What readers are rating, debating, and bookmarking this week." />
+		<CommunityPulse
+			popularReview={reviews[0].text}
+			activeDiscussion="Best revenge arcs?"
+			mostBookmarked="Bone Orbit"
+		/>
+	</section>
+
+	<section class="mt-14 rounded-2xl border border-white/10 bg-[color:var(--surface-1)] p-8 text-center">
+		<h2 class="text-3xl font-bold tracking-tight">Find your next obsession.</h2>
+		<a href="/explore" class="btn-primary mt-5">Explore Manga</a>
+	</section>
+</BaseLayout>

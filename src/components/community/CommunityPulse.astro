@@ -1,0 +1,24 @@
+---
+interface Props {
+  popularReview: string;
+  activeDiscussion: string;
+  mostBookmarked: string;
+}
+
+const { popularReview, activeDiscussion, mostBookmarked } = Astro.props;
+---
+
+<section class="grid gap-4 md:grid-cols-3">
+  <article class="card-surface p-4">
+    <p class="mb-1 text-xs uppercase tracking-wide text-[color:var(--text-muted)]">Popular review</p>
+    <p class="text-sm text-[color:var(--text-main)]">{popularReview}</p>
+  </article>
+  <article class="card-surface p-4">
+    <p class="mb-1 text-xs uppercase tracking-wide text-[color:var(--text-muted)]">Active discussion</p>
+    <p class="text-sm text-[color:var(--text-main)]">{activeDiscussion}</p>
+  </article>
+  <article class="card-surface p-4">
+    <p class="mb-1 text-xs uppercase tracking-wide text-[color:var(--text-muted)]">Most bookmarked</p>
+    <p class="text-sm text-[color:var(--text-main)]">{mostBookmarked}</p>
+  </article>
+</section>

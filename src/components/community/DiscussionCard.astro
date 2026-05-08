@@ -1,0 +1,20 @@
+---
+import type { Discussion, User } from "../../data/types";
+
+interface Props {
+  discussion: Discussion;
+  users: User[];
+}
+
+const { discussion, users } = Astro.props;
+---
+
+<article class="card-surface p-5">
+  <h3 class="text-base font-semibold text-[color:var(--text-main)]">{discussion.title}</h3>
+  <p class="mt-2 text-sm text-[color:var(--text-muted)]">{discussion.replies} replies • Active {discussion.lastActive}</p>
+  <div class="mt-4 flex -space-x-2">
+    {users.map((user) => (
+      <img src={user.avatar} alt={`${user.username} avatar`} class="h-8 w-8 rounded-full border border-[color:var(--surface-0)] object-cover" loading="lazy" />
+    ))}
+  </div>
+</article>

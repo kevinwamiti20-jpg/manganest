@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ReaderTopBar from "../../../components/reader/ReaderTopBar.astro";
+import ReaderPanel from "../../../components/reader/ReaderPanel.astro";
+import ReaderControls from "../../../components/reader/ReaderControls.astro";
+import { manga } from "../../../data/manga";
+import { readerPanels } from "../../../data/panels";
+
+export function getStaticPaths() {
+  return manga.flatMap((entry) =>
+    entry.chapters.map((chapter) => ({
+      params: { slug: entry.slug, chapter: String(chapter.number) },
+      props: { entry, chapter: chapter.number }
+    }))
+  );
+}
+
+const { entry, chapter } = Astro.props;
+const chapterNum = Number(chapter);
+const chapterTitle = entry.chapters.find((item) => item.number === chapterNum)?.title ?? "Untitled";
+---
+
+<BaseLayout
+  title={`${entry.title} Chapter ${chapterNum} | MangaNest Reader`}
+  description={`Read ${entry.title} chapter ${chapterNum} on MangaNest.`}
+  readerMode={true}
+>
+  <ReaderTopBar slug={entry.slug} title={entry.title} chapter={chapterNum} />
+
+  <section aria-label="Reader panels">
+    {readerPanels.slice(0, 6).map((panel, index) => <ReaderPanel src={panel} index={index} />)}
+  </section>
+
+  <p class="mx-auto mt-4 max-w-4xl text-center text-sm text-[color:var(--text-muted)]">{chapterTitle}</p>
+
+  <ReaderControls slug={entry.slug} chapter={chapterNum} maxChapter={entry.chapters.length} />
+</BaseLayout>

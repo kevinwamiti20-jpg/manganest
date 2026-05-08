@@ -1,0 +1,21 @@
+---
+import type { Manga } from "../../data/types";
+import StatusPill from "./StatusPill.astro";
+
+interface Props {
+  item: Manga;
+}
+
+const { item } = Astro.props;
+---
+
+<article class="card-surface p-3 sm:p-4">
+  <a href={`/manga/${item.slug}`} class="flex items-center gap-3 sm:gap-4">
+    <img src={item.cover} alt={`${item.title} thumbnail`} class="h-16 w-12 rounded-md object-cover sm:h-20 sm:w-14" loading="lazy" />
+    <div class="min-w-0 flex-1 space-y-1">
+      <h3 class="line-clamp-1 text-sm font-semibold text-[color:var(--text-main)] sm:text-base">{item.title}</h3>
+      <p class="text-xs text-[color:var(--text-muted)]">Chapter {item.latestChapter} • {item.updatedAgo}</p>
+      <StatusPill status={item.status} />
+    </div>
+  </a>
+</article>

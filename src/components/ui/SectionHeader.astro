@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  href?: string;
+  actionLabel?: string;
+}
+
+const { title, subtitle, href, actionLabel } = Astro.props;
+---
+
+<div class="mb-6 flex items-end justify-between gap-4">
+  <div class="space-y-2">
+    <h2 class="text-2xl font-semibold tracking-tight text-[color:var(--text-main)] sm:text-3xl">{title}</h2>
+    {subtitle && <p class="max-w-2xl text-sm text-[color:var(--text-muted)] sm:text-base">{subtitle}</p>}
+  </div>
+  {href && actionLabel && (
+    <a href={href} class="btn-ghost text-sm">{actionLabel}</a>
+  )}
+</div>

@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap");
+@import "tailwindcss";
+
+:root {
+	--surface-0: #0d141d;
+	--surface-1: #151c25;
+	--surface-2: #232a34;
+	--surface-3: #2e353f;
+	--text-main: #dce3f0;
+	--text-muted: #9ca6b8;
+	--primary: #d0bcff;
+	--primary-strong: #a078ff;
+	--secondary: #ffb3ad;
+	--tertiary: #2fd9f4;
+}
+
+html,
+body {
+	margin: 0;
+	min-height: 100%;
+}
+
+body {
+	font-family: Inter, sans-serif;
+	color: var(--text-main);
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: "Plus Jakarta Sans", Inter, sans-serif;
+}
+
+.app-bg {
+	background:
+		radial-gradient(circle at 10% 0%, rgb(160 120 255 / 0.16), transparent 35%),
+		radial-gradient(circle at 80% 20%, rgb(47 217 244 / 0.12), transparent 34%),
+		linear-gradient(180deg, #0d141d 0%, #0a0f17 100%);
+}
+
+.reader-bg {
+	background:
+		radial-gradient(circle at 50% 0%, rgb(208 188 255 / 0.1), transparent 40%),
+		#070b10;
+}
+
+.card-surface {
+	border: 1px solid rgb(255 255 255 / 0.08);
+	background: linear-gradient(180deg, rgb(21 28 37 / 0.95) 0%, rgb(13 20 29 / 0.95) 100%);
+	border-radius: 1rem;
+	box-shadow: 0 16px 32px rgb(0 0 0 / 0.28);
+	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.card-surface:hover {
+	transform: translateY(-2px);
+	border-color: rgb(208 188 255 / 0.35);
+	box-shadow: 0 20px 34px rgb(0 0 0 / 0.34);
+}
+
+.btn-primary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	background: var(--primary);
+	color: #23113d;
+	font-weight: 600;
+	padding: 0.6rem 1rem;
+	transition: filter 150ms ease, transform 150ms ease;
+}
+
+.btn-primary:hover {
+	filter: brightness(1.05);
+	transform: translateY(-1px);
+}
+
+.btn-ghost {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	border: 1px solid rgb(255 255 255 / 0.14);
+	color: var(--text-main);
+	background: rgb(255 255 255 / 0.03);
+	padding: 0.55rem 0.95rem;
+	transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.btn-ghost:hover {
+	border-color: rgb(208 188 255 / 0.5);
+	background: rgb(208 188 255 / 0.08);
+}
+
+.nav-link {
+	color: var(--text-muted);
+	font-size: 0.95rem;
+	transition: color 150ms ease;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+	color: var(--text-main);
+}
+
+.menu-pop {
+	border: 1px solid rgb(255 255 255 / 0.12);
+	border-radius: 0.8rem;
+	background: rgb(21 28 37 / 0.98);
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+	outline: 2px solid var(--primary-strong);
+	outline-offset: 2px;
+}

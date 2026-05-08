@@ -1,0 +1,32 @@
+---
+import type { Manga } from "../../data/types";
+import GenreChip from "./GenreChip.astro";
+import RatingBadge from "./RatingBadge.astro";
+import StatusPill from "./StatusPill.astro";
+
+interface Props {
+  item: Manga;
+}
+
+const { item } = Astro.props;
+---
+
+<article class="card-surface group h-full overflow-hidden">
+  <a href={`/manga/${item.slug}`} class="block">
+    <div class="relative aspect-[2/3] overflow-hidden">
+      <img src={item.cover} alt={`${item.title} cover`} class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]" loading="lazy" />
+      <div class="absolute right-3 top-3"><RatingBadge rating={item.rating} /></div>
+    </div>
+    <div class="space-y-3 p-4">
+      <div class="flex items-start justify-between gap-3">
+        <h3 class="line-clamp-1 text-base font-semibold text-[color:var(--text-main)] sm:text-lg">{item.title}</h3>
+        <StatusPill status={item.status} />
+      </div>
+      <p class="line-clamp-2 text-sm text-[color:var(--text-muted)]">{item.description}</p>
+      <div class="flex flex-wrap gap-2">
+        {item.genres.slice(0, 3).map((genre) => <GenreChip label={genre} />)}
+      </div>
+      <p class="text-xs uppercase tracking-wide text-[color:var(--text-muted)]">Latest chapter {item.latestChapter}</p>
+    </div>
+  </a>
+</article>

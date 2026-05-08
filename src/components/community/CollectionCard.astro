@@ -1,0 +1,28 @@
+---
+import type { Collection, Manga, User } from "../../data/types";
+
+interface Props {
+  collection: Collection;
+  curator: User;
+  entries: Manga[];
+}
+
+const { collection, curator, entries } = Astro.props;
+---
+
+<article class="card-surface overflow-hidden p-6">
+  <div class="mb-4 flex items-center justify-between gap-3">
+    <div>
+      <h3 class="text-xl font-semibold tracking-tight text-[color:var(--text-main)]">{collection.title}</h3>
+      <p class="text-sm text-[color:var(--text-muted)]">Curated by {curator.username}</p>
+    </div>
+    <span class="rounded-full bg-[color:var(--surface-2)] px-3 py-1 text-xs text-[color:var(--text-muted)]">{collection.mangaSlugs.length} titles</span>
+  </div>
+  <p class="mb-5 text-sm leading-relaxed text-[color:var(--text-muted)]">{collection.description}</p>
+  <div class="mb-5 flex -space-x-3 overflow-hidden">
+    {entries.slice(0, 5).map((entry) => (
+      <img src={entry.cover} alt={`${entry.title} cover`} class="h-28 w-20 rounded-lg border border-[color:var(--surface-0)] object-cover" loading="lazy" />
+    ))}
+  </div>
+  <button type="button" class="btn-ghost text-sm">View Collection</button>
+</article>

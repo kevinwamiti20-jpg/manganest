@@ -1,0 +1,17 @@
+---
+interface Props {
+  slug: string;
+  chapter: number;
+  maxChapter: number;
+}
+
+const { slug, chapter, maxChapter } = Astro.props;
+const prev = Math.max(1, chapter - 1);
+const next = Math.min(maxChapter, chapter + 1);
+---
+
+<nav aria-label="Chapter navigation" class="mx-auto mt-8 flex max-w-4xl flex-wrap items-center justify-between gap-3 rounded-xl border border-white/10 bg-[color:var(--surface-1)] p-4">
+  <a href={`/read/${slug}/${prev}`} class:list={["btn-ghost text-sm", chapter === 1 && "pointer-events-none opacity-40"]}>Previous chapter</a>
+  <button type="button" class="btn-ghost text-sm">Chapter {chapter}</button>
+  <a href={`/read/${slug}/${next}`} class:list={["btn-ghost text-sm", chapter === maxChapter && "pointer-events-none opacity-40"]}>Next chapter</a>
+</nav>
