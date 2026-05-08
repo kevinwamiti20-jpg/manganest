@@ -17,14 +17,14 @@ const { title, description, readerMode = false, hideSiteChrome = false } = Astro
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
   </head>
-  <body class:list={["min-h-screen text-[color:var(--text-main)]", readerMode ? "reader-bg" : "app-bg"]}>
+  <body class:list={["min-h-screen overflow-x-hidden text-[color:var(--text-main)]", readerMode ? "reader-bg" : "app-bg"]}>
     {!readerMode && !hideSiteChrome && <Header />}
     <main class:list={[
       hideSiteChrome ? "w-full p-0" : "mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-10",
